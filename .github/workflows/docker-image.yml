@@ -15,8 +15,20 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
+    # Authenticate with docker
     - name: Authenticate to Docker Hub
       uses: docker/login-action@v1 
       with:
         username: ${{ secrets.DOCKER_HUB_USERNAME }}
         password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        
+    # Build push to docker hub
+    - name: build and push container to Docker Hub
+      uses: docker/build-push-action@v2
+
+      with:
+        context: ./
+        file: ./Dockerfile
+        push: true
+        tags: togai/alf-huggingface-fastapi:latest
+      
